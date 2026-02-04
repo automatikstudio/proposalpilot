@@ -15,8 +15,18 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "ProposalPilot — AI Proposal Generator",
-    description: "Write winning proposals in 60 seconds with AI.",
+    description: "Write winning proposals in 60 seconds with AI. Scope, timeline, pricing, and terms.",
     type: "website",
+    siteName: "ProposalPilot",
+    url: "https://proposalpilot-five.vercel.app",
+    images: [{ url: "https://proposalpilot-five.vercel.app/og-image.png", width: 1200, height: 630, alt: "ProposalPilot — AI Proposal Generator" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ProposalPilot — AI Proposal Generator",
+    description: "Write winning proposals in 60 seconds with AI.",
+    creator: "@automatikstudio",
+    images: ["https://proposalpilot-five.vercel.app/og-image.png"],
   },
 };
 
