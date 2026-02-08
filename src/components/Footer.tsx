@@ -22,6 +22,14 @@ export default function Footer() {
               Terms
             </Link>
             <a
+              href="https://www.aitoolzdir.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-zinc-300 transition-colors"
+            >
+              AI Toolz Dir
+            </a>
+            <a
               href="https://automatik.studio"
               target="_blank"
               rel="noopener noreferrer"
