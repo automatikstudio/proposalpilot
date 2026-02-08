@@ -12,6 +12,12 @@ export default function Navbar() {
         </Link>
         <div className="flex items-center gap-6">
           <Link
+            href="/templates"
+            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
+          >
+            Templates
+          </Link>
+          <Link
             href="/#pricing"
             className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
           >
