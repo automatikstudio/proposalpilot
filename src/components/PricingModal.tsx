@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 interface PricingModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -7,7 +9,30 @@ interface PricingModalProps {
 }
 
 export default function PricingModal({ isOpen, onClose, planName }: PricingModalProps) {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
   if (!isOpen) return null;
+
+  const handleSubmit = async () => {
+    if (!email || !email.includes("@")) return;
+    
+    try {
+      await fetch("/api/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          event: "email_capture", 
+          email,
+          plan: planName,
+          product: "proposalpilot" 
+        }),
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Failed to track email capture:", err);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -32,24 +57,50 @@ export default function PricingModal({ isOpen, onClose, planName }: PricingModal
               <circle cx="6" cy="15" r="3" />
             </svg>
           </div>
-          <h3 className="font-heading text-2xl font-bold text-zinc-100 mb-2">
-            {planName} — Coming Soon
-          </h3>
-          <p className="text-zinc-400 mb-6">
-            We&apos;re putting the finishing touches on paid plans. Leave your email and we&apos;ll
-            notify you when {planName} launches with early-bird pricing.
-          </p>
-          <div className="flex gap-2">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 bg-surface-dark border border-zinc-800 rounded-btn px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-brand-amber/50 transition-colors"
-            />
-            <button className="bg-brand-amber hover:bg-brand-amber-light text-zinc-950 font-medium px-5 py-2.5 rounded-btn transition-all text-sm whitespace-nowrap">
-              Notify Me
-            </button>
-          </div>
-          <p className="text-xs text-zinc-600 mt-3">No spam. Just launch updates.</p>
+          
+          {submitted ? (
+            <>
+              <h3 className="font-heading text-2xl font-bold text-zinc-100 mb-2">
+                You&apos;re on the list! 🎉
+              </h3>
+              <p className="text-zinc-400 mb-6">
+                We&apos;ll email you when {planName} launches with early-bird pricing.
+              </p>
+              <button
+                onClick={onClose}
+                className="bg-brand-amber hover:bg-brand-amber-light text-zinc-950 font-medium px-5 py-2.5 rounded-btn transition-all text-sm"
+              >
+                Got it
+              </button>
+            </>
+          ) : (
+            <>
+              <h3 className="font-heading text-2xl font-bold text-zinc-100 mb-2">
+                {planName} — Coming Soon
+              </h3>
+              <p className="text-zinc-400 mb-6">
+                We&apos;re putting the finishing touches on paid plans. Leave your email and we&apos;ll
+                notify you when {planName} launches with early-bird pricing.
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                  className="flex-1 bg-surface-dark border border-zinc-800 rounded-btn px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-brand-amber/50 transition-colors"
+                />
+                <button 
+                  onClick={handleSubmit}
+                  className="bg-brand-amber hover:bg-brand-amber-light text-zinc-950 font-medium px-5 py-2.5 rounded-btn transition-all text-sm whitespace-nowrap"
+                >
+                  Notify Me
+                </button>
+              </div>
+              <p className="text-xs text-zinc-600 mt-3">No spam. Just launch updates.</p>
+            </>
+          )}
         </div>
       </div>
     </div>
