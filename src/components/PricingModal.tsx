@@ -18,14 +18,15 @@ export default function PricingModal({ isOpen, onClose, planName }: PricingModal
     if (!email || !email.includes("@")) return;
     
     try {
-      await fetch("/api/track", {
+      await fetch("http://77.42.94.208:3458/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           event: "email_capture", 
           email,
           plan: planName,
-          product: "proposalpilot" 
+          product: "proposalpilot",
+          timestamp: new Date().toISOString()
         }),
       });
       setSubmitted(true);
